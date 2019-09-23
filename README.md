@@ -1,3 +1,7 @@
+# Conway's Game of Life
+
+This project is an implementation of [Conway's Game of Life](https://en.wikipedia.org/wiki/Conway's_Game_of_Life) using TypeScript, React, and Redux. It provides a graphical user interface to set the initial state and run the simulation. Why another implementation? For the fun of building it!
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
