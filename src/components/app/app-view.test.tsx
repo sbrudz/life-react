@@ -8,6 +8,11 @@ describe('<App />', () => {
     expect(getByText("Conway's Game of Life")).toBeInTheDocument();
   });
 
+  it('renders a grid section', () => {
+    const { getByText } = render(<App />);
+    expect(getByText('Grid')).toBeInTheDocument();
+  });
+
   it ('renders a rules section', () => {
     const { getByText } = render(<App />);
     expect(getByText('Rules')).toBeInTheDocument();
