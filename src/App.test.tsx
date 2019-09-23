@@ -3,8 +3,13 @@ import { render } from '@testing-library/react';
 import App from './App';
 
 describe('<App />', () => {
-  it('renders welcome message', () => {
+  it('renders a title', () => {
     const { getByText } = render(<App />);
-    expect(getByText('Learn React')).toBeInTheDocument();
+    expect(getByText("Conway's Game of Life")).toBeInTheDocument();
+  });
+
+  it ('renders a rules section', () => {
+    const { getByText } = render(<App />);
+    expect(getByText('Rules')).toBeInTheDocument();
   });
 });
