@@ -1,14 +1,19 @@
+.App {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: space-between;
+}
+
 .App-header {
   text-align: center;
   background-color: #282c34;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
+  font-size: 1em;
   color: white;
 }
 
 .App-rules {
-  padding: 2em;
+  padding: 10vmin 1rem 0 1rem;
+  font-size: 0.8rem;
 }
