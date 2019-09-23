@@ -8,9 +8,9 @@ describe("<App />", () => {
     expect(getByText("Conway's Game of Life")).toBeInTheDocument();
   });
 
-  it("renders a grid section", () => {
+  it("renders a game section", () => {
     const { getByText } = render(<App />);
-    expect(getByText("Grid")).toBeInTheDocument();
+    expect(getByText("Game")).toBeInTheDocument();
   });
 
   it("renders a rules section", () => {

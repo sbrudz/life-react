@@ -1,6 +1,6 @@
 import React from "react";
 import "./app.css";
-import Grid from "../grid";
+import Game from "../game";
 
 const App: React.FC = () => {
   return (
@@ -8,7 +8,7 @@ const App: React.FC = () => {
       <header className="App-header">
         <h1>Conway&apos;s Game of Life</h1>
       </header>
-      <Grid />
+      <Game />
       <section className="App-rules">
         <h2>Rules</h2>
         <ol>
