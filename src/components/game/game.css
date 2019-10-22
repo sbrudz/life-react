@@ -1,0 +1,17 @@
+.Game-section {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+
+.Game-section table {
+  margin: 0 auto;
+  text-align: center;
+  width: 50%;
+  min-width: 300px;
+  border-collapse: collapse;
+}
+
+.Game-section table td {
+  border: 1px solid lightgray;
+}
