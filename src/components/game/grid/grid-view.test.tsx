@@ -16,32 +16,43 @@ describe("<Grid />", () => {
   });
 
   it("renders a grid with the correct number of rows", () => {
-    const { getByTitle } = render(
+    const { getAllByTestId } = render(
       <Grid grid={square} onClick={mockHandleClick} />
     );
-    const grid = getByTitle("Grid");
-    expect(grid.getElementsByTagName("tr").length).toEqual(3);
+    expect(getAllByTestId(/cell-\d-0/).length).toEqual(3);
+  });
+
+  it("renders a grid with the correct number of cells", () => {
+    const { getAllByTestId } = render(
+      <Grid grid={square} onClick={mockHandleClick} />
+    );
+    expect(getAllByTestId(/cell-\d-\d/).length).toEqual(9);
   });
 
   it("renders a grid that has the correct number of columns", () => {
-    const { getByTitle } = render(
+    const { getAllByTestId } = render(
       <Grid grid={square} onClick={mockHandleClick} />
     );
-    const grid = getByTitle("Grid");
-    const rows = grid.getElementsByTagName("tr");
-    for (let i = 0; i < rows.length; i++) {
-      expect(rows[i].getElementsByTagName("td").length).toEqual(3);
-    }
+    expect(getAllByTestId(/cell-0-\d/).length).toEqual(3);
+  });
+
+  it("renders living and dead cells", () => {
+    const liveGrid = [[false, true], [true, false]];
+
+    const { getByTestId } = render(
+      <Grid grid={liveGrid} onClick={mockHandleClick} />
+    );
+    expect(getByTestId("cell-0-0")).toHaveClass("dead");
+    expect(getByTestId("cell-0-1")).toHaveClass("live");
+    expect(getByTestId("cell-1-0")).toHaveClass("live");
+    expect(getByTestId("cell-1-1")).toHaveClass("dead");
   });
 
   it("handles when a cell is clicked", () => {
-    const { getByTitle } = render(
+    const { getByTestId } = render(
       <Grid grid={square} onClick={mockHandleClick} />
     );
-    const grid = getByTitle("Grid");
-    const rows = grid.getElementsByTagName("tr");
-    const middleRowOfCells = rows[1].getElementsByTagName("td");
-    const middleCell = middleRowOfCells[1];
+    const middleCell = getByTestId("cell-1-1");
 
     fireEvent.click(middleCell);
 

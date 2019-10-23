@@ -9,3 +9,11 @@
 .table td {
   border: 1px solid lightgray;
 }
+
+.live {
+  background-color: black;
+}
+
+.dead {
+  background-color: antiquewhite;
+}
