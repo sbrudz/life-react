@@ -1,15 +1,15 @@
 import React from "react";
-import "./app.css";
+import styles from "./app.module.css";
 import Game from "../game";
 
 const App = () => {
   return (
-    <div className="App">
-      <header className="App-header">
+    <div className={styles.main}>
+      <header className={styles.header}>
         <h1>Conway&apos;s Game of Life</h1>
       </header>
       <Game />
-      <section className="App-rules">
+      <section className={styles.rules}>
         <h2>Rules</h2>
         <ol>
           <li>

@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from "react";
-import "./game.css";
+import styles from "./game.module.css";
 import Grid from "./grid";
 
 const Game = () => {
@@ -16,7 +16,7 @@ const Game = () => {
   const handleClick = () => {};
 
   return (
-    <section className="Game-section">
+    <section className={styles.gameSection}>
       <h2>Game</h2>
       <Grid grid={grid} onClick={handleClick} />
       <label htmlFor="size">Size</label>

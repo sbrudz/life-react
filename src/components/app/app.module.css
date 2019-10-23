@@ -1,4 +1,4 @@
-.App {
+.main {
   height: 100vh;
   display: flex;
   flex-direction: column;
@@ -6,14 +6,14 @@
   justify-content: space-between;
 }
 
-.App-header {
+.header {
   text-align: center;
   background-color: #282c34;
   font-size: 1em;
   color: white;
 }
 
-.App-rules {
+.rules {
   padding: 10vmin 1rem 0 1rem;
   font-size: 0.8rem;
 }

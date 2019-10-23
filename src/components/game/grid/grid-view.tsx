@@ -1,5 +1,5 @@
 import React from "react";
-import styles from "./Grid.module.css";
+import styles from "./grid.module.css";
 
 type CellLocation = {
   row: number;
