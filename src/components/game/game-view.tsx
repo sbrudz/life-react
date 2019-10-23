@@ -2,7 +2,7 @@ import React, { useState, useMemo } from "react";
 import "./game.css";
 import Grid from "./grid";
 
-const Game: React.FC = () => {
+const Game = () => {
   const [size, setSize] = useState(20);
   const grid = useMemo(() => {
     const rows = new Array(size);
