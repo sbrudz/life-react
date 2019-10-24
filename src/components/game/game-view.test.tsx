@@ -1,6 +1,7 @@
 import React from "react";
 import { render, fireEvent } from "@testing-library/react";
 import Game from ".";
+import Grid from "./grid";
 
 describe("<Game />", () => {
   it("renders a title", () => {
@@ -57,5 +58,16 @@ describe("<Game />", () => {
     for (let i = 0; i < rows.length; i++) {
       expect(rows[i].getElementsByTagName("td").length).toEqual(newSize);
     }
+  });
+
+  // This integration test case was needed to prove that clicking a cell actually updated the UI with the new state
+  it("handles when a cell is clicked", () => {
+    const { getByTestId } = render(<Game />);
+
+    const aCell = getByTestId("cell-1-1");
+
+    fireEvent.click(aCell);
+
+    expect(getByTestId("cell-1-1")).toHaveClass("live");
   });
 });
