@@ -1,14 +1,10 @@
 import React from "react";
 import styles from "./grid.module.css";
-
-type CellLocation = {
-  row: number;
-  column: number;
-};
+import { CellLocation } from "../game-shared-types";
 
 type GridProps = {
   grid: boolean[][];
-  onClick: (args: CellLocation) => void;
+  onClick: (location: CellLocation) => void;
 };
 
 const Grid = ({ grid, onClick }: GridProps) => {
