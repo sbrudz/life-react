@@ -1,6 +1,15 @@
 import { renderHook, act } from "@testing-library/react-hooks";
 import useGame from "./use-game";
 
+const deadCellCounter = (rowCt: number, cell: boolean) =>
+  cell ? rowCt : rowCt + 1;
+const liveCellCounter = (rowCt: number, cell: boolean) =>
+  !cell ? rowCt : rowCt + 1;
+const countAllCells = (
+  countingMethod: (rowCt: number, cell: boolean) => number
+) => (prevRowCellCt: number, row: boolean[]) =>
+  row.reduce(countingMethod, prevRowCellCt);
+
 describe("the useGame hook", () => {
   describe("on initialization", () => {
     it("provides a size that matches the initialSize", () => {
@@ -23,15 +32,16 @@ describe("the useGame hook", () => {
       const { result } = renderHook(() => useGame(initialSize));
 
       const deadCellCount = result.current.grid.reduce(
-        (deadCellCtAcc: number, row: boolean[]) => {
-          return row.reduce(
-            (rowCt: number, cell: boolean) => (cell ? rowCt : rowCt + 1),
-            deadCellCtAcc
-          );
-        },
+        countAllCells(deadCellCounter),
         0
       );
+      const liveCellCount = result.current.grid.reduce(
+        countAllCells(liveCellCounter),
+        0
+      );
+
       expect(deadCellCount).toEqual(initialSize * initialSize);
+      expect(liveCellCount).toEqual(0);
     });
   });
 
@@ -59,6 +69,61 @@ describe("the useGame hook", () => {
 
       expect(result.current.grid.length).toEqual(newSize);
       expect(result.current.grid[0].length).toEqual(newSize);
+    });
+  });
+
+  describe("when handleCellClick is called", () => {
+    it("toggles the cell that was clicked", () => {
+      const initialSize = 8;
+      const { result } = renderHook(() => useGame(initialSize));
+
+      const clickLocation = { row: 3, column: 4 };
+      act(() => {
+        result.current.handleCellClick(clickLocation);
+      });
+
+      expect(
+        result.current.grid[clickLocation.row][clickLocation.column]
+      ).toBeTruthy();
+    });
+
+    it("only changes the cell that was clicked", () => {
+      const initialSize = 8;
+      const { result } = renderHook(() => useGame(initialSize));
+
+      const clickLocation = { row: 3, column: 4 };
+      act(() => {
+        result.current.handleCellClick(clickLocation);
+      });
+
+      const deadCellCount = result.current.grid.reduce(
+        countAllCells(deadCellCounter),
+        0
+      );
+      const liveCellCount = result.current.grid.reduce(
+        countAllCells(liveCellCounter),
+        0
+      );
+
+      expect(liveCellCount).toEqual(1);
+      expect(deadCellCount).toEqual(initialSize * initialSize - 1);
+    });
+
+    it("reverts the cell back on a double click", () => {
+      const initialSize = 8;
+      const { result } = renderHook(() => useGame(initialSize));
+
+      const clickLocation = { row: 3, column: 4 };
+      act(() => {
+        result.current.handleCellClick(clickLocation);
+      });
+      act(() => {
+        result.current.handleCellClick(clickLocation);
+      });
+
+      expect(
+        result.current.grid[clickLocation.row][clickLocation.column]
+      ).toBeFalsy();
     });
   });
 });
