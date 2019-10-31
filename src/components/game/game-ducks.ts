@@ -42,6 +42,9 @@ export const resizeGrid = (newSize: number): GameActionTypes => {
 };
 
 export const initGameState = (size: number) => {
+  if (size <= 0) {
+    throw new RangeError("The size must be greater than 0");
+  }
   const grid = [];
   for (let i = 0; i < size; i++) {
     const row = [];
