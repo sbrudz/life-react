@@ -1,14 +1,10 @@
 import { renderHook, act } from "@testing-library/react-hooks";
 import useGame from "./use-game";
-
-const deadCellCounter = (rowCt: number, cell: boolean) =>
-  cell ? rowCt : rowCt + 1;
-const liveCellCounter = (rowCt: number, cell: boolean) =>
-  !cell ? rowCt : rowCt + 1;
-const countAllCells = (
-  countingMethod: (rowCt: number, cell: boolean) => number
-) => (prevRowCellCt: number, row: boolean[]) =>
-  row.reduce(countingMethod, prevRowCellCt);
+import {
+  countCells,
+  deadCellCounter,
+  liveCellCounter
+} from "./game-test-utils";
 
 describe("the useGame hook", () => {
   describe("on initialization", () => {
@@ -31,14 +27,8 @@ describe("the useGame hook", () => {
       const initialSize = 8;
       const { result } = renderHook(() => useGame(initialSize));
 
-      const deadCellCount = result.current.grid.reduce(
-        countAllCells(deadCellCounter),
-        0
-      );
-      const liveCellCount = result.current.grid.reduce(
-        countAllCells(liveCellCounter),
-        0
-      );
+      const deadCellCount = countCells(result.current.grid, deadCellCounter);
+      const liveCellCount = countCells(result.current.grid, liveCellCounter);
 
       expect(deadCellCount).toEqual(initialSize * initialSize);
       expect(liveCellCount).toEqual(0);
@@ -96,14 +86,8 @@ describe("the useGame hook", () => {
         result.current.handleCellClick(clickLocation);
       });
 
-      const deadCellCount = result.current.grid.reduce(
-        countAllCells(deadCellCounter),
-        0
-      );
-      const liveCellCount = result.current.grid.reduce(
-        countAllCells(liveCellCounter),
-        0
-      );
+      const deadCellCount = countCells(result.current.grid, deadCellCounter);
+      const liveCellCount = countCells(result.current.grid, liveCellCounter);
 
       expect(liveCellCount).toEqual(1);
       expect(deadCellCount).toEqual(initialSize * initialSize - 1);

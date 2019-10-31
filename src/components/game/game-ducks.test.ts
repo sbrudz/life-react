@@ -1,4 +1,14 @@
-import reducer, { initGameState, toggleCell, resizeGrid } from "./game-ducks";
+import reducer, {
+  initGameState,
+  toggleCell,
+  resizeGrid,
+  evolveNextGeneration
+} from "./game-ducks";
+import {
+  countCells,
+  deadCellCounter,
+  liveCellCounter
+} from "./game-test-utils";
 
 describe("game-ducks", () => {
   describe("reducer", () => {
@@ -25,6 +35,23 @@ describe("game-ducks", () => {
 
         expect(newState.grid.length).toEqual(newSize);
         expect(newState.grid[0].length).toEqual(newSize);
+      });
+    });
+
+    describe("for the evolveNextGeneration action", () => {
+      describe("with an all dead grid", () => {
+        it("creates an all dead generation", () => {
+          const initialSize = 3;
+          const startingState = initGameState(initialSize);
+          const evolveAction = evolveNextGeneration();
+
+          const newState = reducer(startingState, evolveAction);
+
+          const deadCellCount = countCells(newState.grid, deadCellCounter);
+          const liveCellCount = countCells(newState.grid, liveCellCounter);
+          expect(deadCellCount).toEqual(initialSize * initialSize);
+          expect(liveCellCount).toEqual(0);
+        });
       });
     });
 
