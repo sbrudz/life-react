@@ -1,6 +1,6 @@
 # Conway's Game of Life
 
-This project is an implementation of [Conway's Game of Life](https://en.wikipedia.org/wiki/Conway's_Game_of_Life) using TypeScript, React, and Redux. It provides a graphical user interface to set the initial state and run the simulation. Why another implementation? For the fun of building it!
+This project is an implementation of [Conway's Game of Life](https://en.wikipedia.org/wiki/Conway's_Game_of_Life) using React, Hooks, and TypeScript. It provides a graphical user interface to set the initial state and run the simulation.
 
 The project structure is organized according to Charles Stover's [Optimal file structure for React applications](https://medium.com/@Charles_Stover/optimal-file-structure-for-react-applications-f3e35ad0a145).
 
