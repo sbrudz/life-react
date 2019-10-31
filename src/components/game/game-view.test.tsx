@@ -70,4 +70,18 @@ describe("<Game />", () => {
 
     expect(getByTestId("cell-1-1")).toHaveClass("live");
   });
+
+  // Another integration test -- not sure how to test the step button without actually doing a full integration test like this
+  it("Evolves the game to the next generation when the Step button is clicked", () => {
+    const { getByText, getByTestId } = render(<Game />);
+
+    const aCell = getByTestId("cell-1-1");
+    fireEvent.click(aCell);
+    expect(getByTestId("cell-1-1")).toHaveClass("live");
+
+    const stepButton = getByText("Step");
+    fireEvent.click(stepButton);
+
+    expect(getByTestId("cell-1-1")).toHaveClass("dead");
+  });
 });

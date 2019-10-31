@@ -2,7 +2,7 @@ import React from "react";
 import styles from "./game.module.css";
 import Grid from "./grid";
 import useGame from "./use-game";
-import { resizeGrid, toggleCell } from "./game-ducks";
+import { evolveNextGeneration, resizeGrid, toggleCell } from "./game-ducks";
 
 const Game = () => {
   const { size, grid, dispatch } = useGame(20);
@@ -21,14 +21,9 @@ const Game = () => {
         value={size}
         onChange={e => dispatch(resizeGrid(+e.target.value))}
       />
-      <button>Step</button>
+      <button onClick={() => dispatch(evolveNextGeneration())}>Step</button>
     </section>
   );
 };
-
-/*
-clicking a cell in the grid toggles its state
-clicking the step button applies the rules of life to the current grid state to generate a new grid state
- */
 
 export default Game;
