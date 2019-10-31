@@ -1,22 +1,14 @@
 import { useReducer, useMemo } from "react";
-import reducer, { initGameState, toggleCell, resizeGrid } from "./game-ducks";
+import reducer, { initGameState } from "./game-ducks";
 
 const useGame = (initialSize: number) => {
-  const [state, dispatch] = useReducer(reducer, initialSize, initGameState);
-
-  const handleCellClick = (cellLocation: { row: number; column: number }) => {
-    dispatch(toggleCell(cellLocation));
-  };
-
-  const setSize = (newSize: number) => {
-    dispatch(resizeGrid(newSize));
-  };
+  const [gameState, dispatch] = useReducer(reducer, initialSize, initGameState);
 
   const size = useMemo(() => {
-    return state.grid.length;
-  }, [state]);
+    return gameState.grid.length;
+  }, [gameState]);
 
-  return { size, setSize, grid: state.grid, handleCellClick };
+  return { size, grid: gameState.grid, dispatch };
 };
 
 export default useGame;

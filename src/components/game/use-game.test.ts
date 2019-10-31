@@ -5,6 +5,7 @@ import {
   deadCellCounter,
   liveCellCounter
 } from "./game-test-utils";
+import { resizeGrid, toggleCell } from "./game-ducks";
 
 describe("the useGame hook", () => {
   describe("on initialization", () => {
@@ -35,14 +36,14 @@ describe("the useGame hook", () => {
     });
   });
 
-  describe("when setSize is called", () => {
+  describe("when a resizeGrid action is dispatched", () => {
     it("updates the size property", () => {
       const initialSize = 8;
       const { result } = renderHook(() => useGame(initialSize));
 
       const newSize = 12;
       act(() => {
-        result.current.setSize(newSize);
+        result.current.dispatch(resizeGrid(newSize));
       });
 
       expect(result.current.size).toEqual(newSize);
@@ -54,7 +55,7 @@ describe("the useGame hook", () => {
 
       const newSize = 12;
       act(() => {
-        result.current.setSize(newSize);
+        result.current.dispatch(resizeGrid(newSize));
       });
 
       expect(result.current.grid.length).toEqual(newSize);
@@ -62,14 +63,14 @@ describe("the useGame hook", () => {
     });
   });
 
-  describe("when handleCellClick is called", () => {
+  describe("when toggleCell action is dispatched", () => {
     it("toggles the cell that was clicked", () => {
       const initialSize = 8;
       const { result } = renderHook(() => useGame(initialSize));
 
       const clickLocation = { row: 3, column: 4 };
       act(() => {
-        result.current.handleCellClick(clickLocation);
+        result.current.dispatch(toggleCell(clickLocation));
       });
 
       expect(
@@ -83,7 +84,7 @@ describe("the useGame hook", () => {
 
       const clickLocation = { row: 3, column: 4 };
       act(() => {
-        result.current.handleCellClick(clickLocation);
+        result.current.dispatch(toggleCell(clickLocation));
       });
 
       const deadCellCount = countCells(result.current.grid, deadCellCounter);
@@ -99,10 +100,10 @@ describe("the useGame hook", () => {
 
       const clickLocation = { row: 3, column: 4 };
       act(() => {
-        result.current.handleCellClick(clickLocation);
+        result.current.dispatch(toggleCell(clickLocation));
       });
       act(() => {
-        result.current.handleCellClick(clickLocation);
+        result.current.dispatch(toggleCell(clickLocation));
       });
 
       expect(
