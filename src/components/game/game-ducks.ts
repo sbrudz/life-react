@@ -1,4 +1,5 @@
 import { CellLocation } from "./game-shared-types";
+import { shouldLive } from "./game-core-rules";
 
 type GameState = {
   grid: boolean[][];
@@ -72,15 +73,7 @@ export const initGameState = (size: number) => {
   return { grid };
 };
 
-const shouldLive = (
-  currentGrid: boolean[][],
-  rowIdx: number,
-  colIdx: number
-) => {
-  return false;
-};
-
-const evolveGrid = (currentGrid: boolean[][]) => {
+const nextGeneration = (currentGrid: boolean[][]) => {
   const newGrid = [];
   for (let rowIdx = 0; rowIdx < currentGrid.length; rowIdx++) {
     const row = [];
@@ -104,7 +97,7 @@ const reducer = (state: GameState, action: GameActionTypes): GameState => {
     case "RESIZE_GRID":
       return initGameState(action.payload.newSize);
     case "EVOLVE_NEXT_GENERATION":
-      return { grid: evolveGrid(state.grid) };
+      return { grid: nextGeneration(state.grid) };
     default:
       throw new Error("Unrecognized action type");
   }

@@ -95,6 +95,38 @@ describe("game-ducks", () => {
           expect(liveCellCount).toEqual(0);
         });
       });
+
+      describe("with three adjacent live cells", () => {
+        it("creates a generation where those cells live on and a new cell is born", () => {
+          const initialSize = 5;
+          const initialState = initGameState(initialSize);
+          const nextState1 = reducer(
+            initialState,
+            toggleCell({ row: 1, column: 1 })
+          );
+          const nextState2 = reducer(
+            nextState1,
+            toggleCell({ row: 1, column: 2 })
+          );
+          const startingState = reducer(
+            nextState2,
+            toggleCell({ row: 2, column: 1 })
+          );
+
+          const evolveAction = evolveNextGeneration();
+          const newState = reducer(startingState, evolveAction);
+
+          expect(newState.grid[1][1]).toBeTruthy();
+          expect(newState.grid[1][2]).toBeTruthy();
+          expect(newState.grid[2][1]).toBeTruthy();
+          expect(newState.grid[2][2]).toBeTruthy();
+
+          const deadCellCount = countCells(newState.grid, deadCellCounter);
+          const liveCellCount = countCells(newState.grid, liveCellCounter);
+          expect(deadCellCount).toEqual(initialSize * initialSize - 4);
+          expect(liveCellCount).toEqual(4);
+        });
+      });
     });
 
     describe("for an unknown action", () => {
