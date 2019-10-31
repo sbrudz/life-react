@@ -62,14 +62,35 @@ export const initGameState = (size: number) => {
     throw new RangeError("The size must be greater than 0");
   }
   const grid = [];
-  for (let i = 0; i < size; i++) {
+  for (let rowIdx = 0; rowIdx < size; rowIdx++) {
     const row = [];
-    for (let j = 0; j < size; j++) {
+    for (let colIdx = 0; colIdx < size; colIdx++) {
       row.push(false);
     }
     grid.push(row);
   }
   return { grid };
+};
+
+const shouldLive = (
+  currentGrid: boolean[][],
+  rowIdx: number,
+  colIdx: number
+) => {
+  return false;
+};
+
+const evolveGrid = (currentGrid: boolean[][]) => {
+  const newGrid = [];
+  for (let rowIdx = 0; rowIdx < currentGrid.length; rowIdx++) {
+    const row = [];
+    for (let colIdx = 0; colIdx < currentGrid[rowIdx].length; colIdx++) {
+      const newCellState = shouldLive(currentGrid, rowIdx, colIdx);
+      row.push(newCellState);
+    }
+    newGrid.push(row);
+  }
+  return newGrid;
 };
 
 const reducer = (state: GameState, action: GameActionTypes): GameState => {
@@ -83,7 +104,7 @@ const reducer = (state: GameState, action: GameActionTypes): GameState => {
     case "RESIZE_GRID":
       return initGameState(action.payload.newSize);
     case "EVOLVE_NEXT_GENERATION":
-      return state;
+      return { grid: evolveGrid(state.grid) };
     default:
       throw new Error("Unrecognized action type");
   }

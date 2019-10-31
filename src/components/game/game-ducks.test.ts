@@ -53,6 +53,48 @@ describe("game-ducks", () => {
           expect(liveCellCount).toEqual(0);
         });
       });
+
+      describe("with a single live cell", () => {
+        it("creates an all dead generation", () => {
+          const initialSize = 3;
+          const initialState = initGameState(initialSize);
+          const startingState = reducer(
+            initialState,
+            toggleCell({ row: 1, column: 1 })
+          );
+
+          const evolveAction = evolveNextGeneration();
+          const newState = reducer(startingState, evolveAction);
+
+          const deadCellCount = countCells(newState.grid, deadCellCounter);
+          const liveCellCount = countCells(newState.grid, liveCellCounter);
+          expect(deadCellCount).toEqual(initialSize * initialSize);
+          expect(liveCellCount).toEqual(0);
+        });
+      });
+
+      describe("with two adjacent live cells", () => {
+        it("creates an all dead generation", () => {
+          const initialSize = 5;
+          const initialState = initGameState(initialSize);
+          const nextState = reducer(
+            initialState,
+            toggleCell({ row: 1, column: 2 })
+          );
+          const startingState = reducer(
+            nextState,
+            toggleCell({ row: 1, column: 1 })
+          );
+
+          const evolveAction = evolveNextGeneration();
+          const newState = reducer(startingState, evolveAction);
+
+          const deadCellCount = countCells(newState.grid, deadCellCounter);
+          const liveCellCount = countCells(newState.grid, liveCellCounter);
+          expect(deadCellCount).toEqual(initialSize * initialSize);
+          expect(liveCellCount).toEqual(0);
+        });
+      });
     });
 
     describe("for an unknown action", () => {
