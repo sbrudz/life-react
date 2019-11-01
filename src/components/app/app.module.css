@@ -3,7 +3,12 @@
   display: flex;
   flex-direction: column;
   align-items: stretch;
-  justify-content: space-between;
+  justify-content: stretch;
+}
+
+.body {
+  flex-grow: 1;
+  display: flex;
 }
 
 .header {

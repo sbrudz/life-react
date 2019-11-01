@@ -1,6 +1,49 @@
 .section {
   display: flex;
-  flex-direction: column;
-  align-items: center;
   flex-grow: 1;
+  flex-wrap: wrap;
+  align-content: stretch;
+  justify-content: center;
+}
+
+.section > h2 {
+  display: none;
+}
+
+.side {
+  padding: 1rem 1rem 1rem 0;
+  flex-basis: 20%;
+}
+
+.side p {
+  margin-top: 0;
+  margin-bottom: 1rem;
+}
+
+.side label,
+.side button,
+.side input {
+  font-size: 1rem;
+}
+
+.side input {
+  width: 3rem;
+  margin-left: 1rem;
+}
+
+.side fieldset,
+.side div {
+  border: none;
+  padding: 0;
+  margin: 0 0 1rem 0;
+  display: flex;
+}
+
+.side fieldset {
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.side div {
+  justify-content: space-evenly;
 }

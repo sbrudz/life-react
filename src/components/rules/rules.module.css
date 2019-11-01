@@ -1,0 +1,15 @@
+.rules {
+  font-size: 0.8rem;
+}
+
+.rules h2 {
+  font-size: 1rem;
+}
+
+.rules ol {
+  padding-left: 1rem;
+}
+
+.rules li {
+  margin-bottom: 0.5rem;
+}

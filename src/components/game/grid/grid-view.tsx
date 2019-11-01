@@ -35,7 +35,7 @@ const Grid = ({ grid, onClick }: GridProps) => {
   });
 
   return (
-    <svg width="75%" data-testid="Grid" className={styles.table}>
+    <svg data-testid="Grid" className={styles.table}>
       {body}
     </svg>
   );

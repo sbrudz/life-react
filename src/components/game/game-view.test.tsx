@@ -1,5 +1,5 @@
 import React from "react";
-import { render, fireEvent, within } from "@testing-library/react";
+import { render, fireEvent } from "@testing-library/react";
 import Game from ".";
 import { act } from "react-dom/test-utils";
 
@@ -23,12 +23,12 @@ describe("<Game />", () => {
 
   it("renders a Size label and input", () => {
     const { getByLabelText } = render(<Game />);
-    expect(getByLabelText("Size")).toBeInTheDocument();
+    expect(getByLabelText("Grid Size")).toBeInTheDocument();
   });
 
   it("renders a Size input that defaults to 20", () => {
     const { getByLabelText } = render(<Game />);
-    const sizeInput = getByLabelText("Size");
+    const sizeInput = getByLabelText("Grid Size");
     expect(sizeInput).toHaveValue(20);
   });
 
@@ -46,7 +46,7 @@ describe("<Game />", () => {
     const newSize = 25;
     const { getAllByTestId, getByLabelText } = render(<Game />);
 
-    const sizeInput = getByLabelText("Size");
+    const sizeInput = getByLabelText("Grid Size");
     fireEvent.change(sizeInput, { target: { value: newSize } });
 
     expect(getAllByTestId(/cell-\d+-0/).length).toEqual(newSize);
