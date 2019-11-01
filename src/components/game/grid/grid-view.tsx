@@ -26,7 +26,7 @@ const Grid = ({ grid, onClick }: GridProps) => {
   });
 
   return (
-    <table title="Grid" className={styles.table}>
+    <table title="Grid" data-testid="Grid" className={styles.table}>
       <tbody>{body}</tbody>
     </table>
   );

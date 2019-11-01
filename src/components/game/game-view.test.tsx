@@ -1,5 +1,5 @@
 import React from "react";
-import { render, fireEvent } from "@testing-library/react";
+import { render, fireEvent, within } from "@testing-library/react";
 import Game from ".";
 import { act } from "react-dom/test-utils";
 
@@ -12,8 +12,8 @@ describe("<Game />", () => {
   });
 
   it("renders a grid", () => {
-    const { getByTitle } = render(<Game />);
-    expect(getByTitle("Grid")).toBeInTheDocument();
+    const { getByTestId } = render(<Game />);
+    expect(getByTestId("Grid")).toBeInTheDocument();
   });
 
   it("renders a Step button", () => {
@@ -33,33 +33,24 @@ describe("<Game />", () => {
   });
 
   it("renders a grid that has 20 rows", () => {
-    const { getByTitle } = render(<Game />);
-    const grid = getByTitle("Grid");
-    expect(grid.getElementsByTagName("tr").length).toEqual(20);
+    const { getAllByTestId } = render(<Game />);
+    expect(getAllByTestId(/cell-\d+-0/).length).toEqual(20);
   });
 
   it("renders a grid that has 20 columns", () => {
-    const { getByTitle } = render(<Game />);
-    const grid = getByTitle("Grid");
-    const rows = grid.getElementsByTagName("tr");
-    for (let i = 0; i < rows.length; i++) {
-      expect(rows[i].getElementsByTagName("td").length).toEqual(20);
-    }
+    const { getAllByTestId } = render(<Game />);
+    expect(getAllByTestId(/cell-0-\d+/).length).toEqual(20);
   });
 
   it("resizes the grid when Size is changed", () => {
     const newSize = 25;
-    const { getByTitle, getByLabelText } = render(<Game />);
+    const { getAllByTestId, getByLabelText } = render(<Game />);
 
     const sizeInput = getByLabelText("Size");
     fireEvent.change(sizeInput, { target: { value: newSize } });
 
-    const grid = getByTitle("Grid");
-    const rows = grid.getElementsByTagName("tr");
-    expect(rows.length).toEqual(newSize);
-    for (let i = 0; i < rows.length; i++) {
-      expect(rows[i].getElementsByTagName("td").length).toEqual(newSize);
-    }
+    expect(getAllByTestId(/cell-\d+-0/).length).toEqual(newSize);
+    expect(getAllByTestId(/cell-0-\d+/).length).toEqual(newSize);
   });
 
   // This integration test case was needed to prove that clicking a cell actually updated the UI with the new state
