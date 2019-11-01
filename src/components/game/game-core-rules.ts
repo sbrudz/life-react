@@ -26,8 +26,12 @@ export const isNeighbor = (me: CellLocation, them: CellLocation) => {
   }
 
   if (
-    [me.row - 1, me.row, me.row + 1].includes(them.row) &&
-    [me.column - 1, me.column, me.column + 1].includes(them.column)
+    (them.row === me.row - 1 ||
+      them.row === me.row ||
+      them.row === me.row + 1) &&
+    (them.column === me.column - 1 ||
+      them.column === me.column ||
+      them.column === me.column + 1)
   ) {
     return true;
   }
@@ -39,16 +43,18 @@ const getLiveNeighborCount = (
   target: CellLocation
 ): number => {
   let liveNeighborCount = 0;
-  grid.forEach((row, rowIdx) => {
-    row.forEach((cell, columnIdx) => {
-      const isQueryCellAlive = grid[rowIdx][columnIdx];
+  const cellToCheck = { row: 0, column: 0 };
+  for (let rowIdx = 0; rowIdx < grid.length; rowIdx++) {
+    for (let columnIdx = 0; columnIdx < grid[rowIdx].length; columnIdx++) {
+      cellToCheck.row = rowIdx;
+      cellToCheck.column = columnIdx;
       if (
-        isQueryCellAlive &&
-        isNeighbor(target, { row: rowIdx, column: columnIdx })
+        grid[rowIdx][columnIdx] && // if cellToCheck is alive
+        isNeighbor(target, cellToCheck)
       ) {
         liveNeighborCount += 1;
       }
-    });
-  });
+    }
+  }
   return liveNeighborCount;
 };
