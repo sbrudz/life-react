@@ -20,31 +20,33 @@ const Game = () => {
   }, [running]);
 
   return (
-    <section className={styles.gameSection}>
+    <section className={styles.section}>
       <h2>Game</h2>
       <Grid
         grid={grid}
         onClick={cellLocation => dispatch(toggleCell(cellLocation))}
       />
-      <label htmlFor="size">Size</label>
-      <input
-        type="number"
-        id="size"
-        value={size}
-        onChange={e => dispatch(resizeGrid(+e.target.value))}
-      />
-      <button
-        disabled={running}
-        onClick={() => dispatch(evolveNextGeneration())}
-      >
-        Step
-      </button>
-      <button disabled={running} onClick={() => setRunning(true)}>
-        Play
-      </button>
-      <button disabled={!running} onClick={() => setRunning(false)}>
-        Stop
-      </button>
+      <div>
+        <label htmlFor="size">Size</label>
+        <input
+          type="number"
+          id="size"
+          value={size}
+          onChange={e => dispatch(resizeGrid(+e.target.value))}
+        />
+        <button
+          disabled={running}
+          onClick={() => dispatch(evolveNextGeneration())}
+        >
+          Step
+        </button>
+        <button disabled={running} onClick={() => setRunning(true)}>
+          Play
+        </button>
+        <button disabled={!running} onClick={() => setRunning(false)}>
+          Stop
+        </button>
+      </div>
     </section>
   );
 };

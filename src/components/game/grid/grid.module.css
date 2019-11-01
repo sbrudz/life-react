@@ -1,19 +1,13 @@
 .table {
   margin: 0 auto;
-  text-align: center;
-  width: 50%;
-  min-width: 300px;
-  border-collapse: collapse;
-}
-
-.table td {
-  border: 1px solid lightgray;
+  flex-grow: 1;
 }
 
 .live {
-  background-color: black;
+  fill: black;
 }
 
 .dead {
-  background-color: antiquewhite;
+  fill: antiquewhite;
+  stroke: lightgray;
 }

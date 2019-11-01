@@ -8,27 +8,36 @@ type GridProps = {
 };
 
 const Grid = ({ grid, onClick }: GridProps) => {
+  const height = 100 / grid.length;
+  let currY = 0;
   const body = grid.map((row, rowIdx) => {
-    const children = row.map((cellVal, colIdx) => {
+    const width = 100 / row.length;
+    let currX = 0;
+    const rowOfCells = row.map((cellVal, colIdx) => {
       const cellId = `cell-${rowIdx}-${colIdx}`;
-      return (
-        <td
+      const cell = (
+        <rect
           key={cellId}
+          height={`${height}%`}
+          width={`${width}%`}
+          x={`${currX}%`}
+          y={`${currY}%`}
           data-testid={cellId}
           className={cellVal ? styles.live : styles.dead}
           onClick={() => onClick({ row: rowIdx, column: colIdx })}
-        >
-          {cellVal ? 1 : 0}
-        </td>
+        />
       );
+      currX += width;
+      return cell;
     });
-    return <tr key={`row-${rowIdx}`}>{children}</tr>;
+    currY += height;
+    return rowOfCells;
   });
 
   return (
-    <table title="Grid" data-testid="Grid" className={styles.table}>
-      <tbody>{body}</tbody>
-    </table>
+    <svg width="75%" data-testid="Grid" className={styles.table}>
+      {body}
+    </svg>
   );
 };
 
