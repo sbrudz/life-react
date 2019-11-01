@@ -1,7 +1,9 @@
 import React from "react";
 import { render, fireEvent } from "@testing-library/react";
 import Game from ".";
-import Grid from "./grid";
+import { act } from "react-dom/test-utils";
+
+jest.useFakeTimers();
 
 describe("<Game />", () => {
   it("renders a title", () => {
@@ -83,5 +85,129 @@ describe("<Game />", () => {
     fireEvent.click(stepButton);
 
     expect(getByTestId("cell-1-1")).toHaveClass("dead");
+  });
+
+  describe("when the game first starts", () => {
+    it("has an enabled Play button", () => {
+      const { getByText } = render(<Game />);
+      const playButton = getByText("Play");
+      expect(playButton).toBeEnabled();
+    });
+
+    it("has an enabled Step button", () => {
+      const { getByText } = render(<Game />);
+      const stepButton = getByText("Step");
+      expect(stepButton).toBeEnabled();
+    });
+
+    it("has an disable Stop button", () => {
+      const { getByText } = render(<Game />);
+      const stopButton = getByText("Stop");
+      expect(stopButton).toBeDisabled();
+    });
+  });
+
+  describe("when the Play button is clicked", () => {
+    it("starts running the game", () => {
+      const { getByText, getByTestId } = render(<Game />);
+      const aCell = getByTestId("cell-1-1");
+      fireEvent.click(aCell);
+
+      const playButton = getByText("Play");
+      fireEvent.click(playButton);
+
+      act(() => {
+        jest.advanceTimersByTime(1001);
+      });
+
+      expect(getByTestId("cell-1-1")).toHaveClass("dead");
+    });
+
+    it("enables the Stop button", () => {
+      const { getByText } = render(<Game />);
+      const playButton = getByText("Play");
+
+      fireEvent.click(playButton);
+
+      const stopButton = getByText("Stop");
+      expect(stopButton).toBeEnabled();
+    });
+
+    it("disables the Play button", () => {
+      const { getByText } = render(<Game />);
+      const playButton = getByText("Play");
+
+      fireEvent.click(playButton);
+
+      expect(playButton).toBeDisabled();
+    });
+
+    it("disables the Step button", () => {
+      const { getByText } = render(<Game />);
+      const playButton = getByText("Play");
+
+      fireEvent.click(playButton);
+
+      const stepButton = getByText("Step");
+      expect(stepButton).toBeDisabled();
+    });
+  });
+
+  describe("when game is running and the Stop button is clicked", () => {
+    it("stops running the game", () => {
+      const { getByText, getByTestId } = render(<Game />);
+      const aCell = getByTestId("cell-1-1");
+      fireEvent.click(aCell);
+
+      const playButton = getByText("Play");
+      fireEvent.click(playButton);
+
+      act(() => {
+        jest.advanceTimersByTime(10);
+      });
+
+      const stopButton = getByText("Stop");
+      fireEvent.click(stopButton);
+
+      act(() => {
+        jest.advanceTimersByTime(1000);
+      });
+
+      expect(getByTestId("cell-1-1")).toHaveClass("live");
+    });
+
+    it("disables the Stop button", () => {
+      const { getByText } = render(<Game />);
+      const playButton = getByText("Play");
+      fireEvent.click(playButton);
+
+      const stopButton = getByText("Stop");
+      fireEvent.click(stopButton);
+
+      expect(stopButton).toBeDisabled();
+    });
+
+    it("enables the Play button", () => {
+      const { getByText } = render(<Game />);
+      const playButton = getByText("Play");
+      fireEvent.click(playButton);
+
+      const stopButton = getByText("Stop");
+      fireEvent.click(stopButton);
+
+      expect(playButton).toBeEnabled();
+    });
+
+    it("enables the Step button", () => {
+      const { getByText } = render(<Game />);
+      const playButton = getByText("Play");
+      fireEvent.click(playButton);
+
+      const stopButton = getByText("Stop");
+      fireEvent.click(stopButton);
+
+      const stepButton = getByText("Step");
+      expect(stepButton).toBeEnabled();
+    });
   });
 });
