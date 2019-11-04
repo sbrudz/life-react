@@ -1,10 +1,6 @@
 import { renderHook, act } from "@testing-library/react-hooks";
 import useGame from "./use-game";
-import {
-  countCells,
-  deadCellCounter,
-  liveCellCounter
-} from "./game-test-utils";
+import { countCells, deadCellCounter, liveCellCounter } from "./game-utils";
 import { resizeGrid, toggleCell } from "./game-ducks";
 
 describe("the useGame hook", () => {

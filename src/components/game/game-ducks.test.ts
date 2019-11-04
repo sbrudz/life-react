@@ -4,11 +4,7 @@ import reducer, {
   resizeGrid,
   evolveNextGeneration
 } from "./game-ducks";
-import {
-  countCells,
-  deadCellCounter,
-  liveCellCounter
-} from "./game-test-utils";
+import { countCells, deadCellCounter, liveCellCounter } from "./game-utils";
 
 describe("game-ducks", () => {
   describe("reducer", () => {
