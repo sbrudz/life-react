@@ -18,7 +18,7 @@ const Game = () => {
         clearInterval(timerId);
       };
     }
-  }, [running]);
+  }, [running, dispatch]);
 
   return (
     <section className={styles.section}>
