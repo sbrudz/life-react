@@ -1,9 +1,11 @@
 {
   "name": "life-react",
   "version": "0.1.0",
-  "private": true,
+  "author": {
+    "name": "Steve Brudz"
+  },
   "license": "MIT",
-  "homepage": "https://sbrudz.github.io/life-react",
+  "homepage": "https://sbrudz.github.io/life-react/",
   "dependencies": {
     "@testing-library/jest-dom": "^4.1.0",
     "@testing-library/react": "^9.1.4",
@@ -22,8 +24,8 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "predeploy": "npm run build",
-    "deploy": "gh-pages -d dist"
+    "predeploy": "yarn run build",
+    "deploy": "gh-pages -d build"
   },
   "eslintConfig": {
     "extends": "react-app"
