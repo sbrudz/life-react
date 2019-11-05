@@ -4,7 +4,8 @@ import reducer, {
   resizeGrid,
   evolveNextGeneration,
   startGame,
-  stopGame
+  stopGame,
+  clearGame
 } from "./game-ducks";
 import { countCells, deadCellCounter, liveCellCounter } from "./game-utils";
 
@@ -149,6 +150,23 @@ describe("game-ducks", () => {
         const newState = reducer(runningState, action);
         expect(newState.grid).toEqual(runningState.grid);
         expect(newState.running).toBeFalsy();
+      });
+    });
+
+    describe("for the clearGame action", () => {
+      it("clears all live cells on the grid", () => {
+        const size = 5;
+        const initialState = initGameState(size);
+        const cell = { row: 1, column: 2 };
+        const action = toggleCell(cell);
+        const startingState = reducer(initialState, action);
+
+        const newState = reducer(startingState, clearGame());
+
+        const deadCellCount = countCells(newState.grid, deadCellCounter);
+        const liveCellCount = countCells(newState.grid, liveCellCounter);
+        expect(deadCellCount).toEqual(size * size);
+        expect(liveCellCount).toEqual(0);
       });
     });
 

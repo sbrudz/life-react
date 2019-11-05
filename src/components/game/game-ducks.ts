@@ -11,6 +11,7 @@ const RESIZE_GRID = "RESIZE_GRID";
 const EVOLVE_NEXT_GENERATION = "EVOLVE_NEXT_GENERATION";
 const START_GAME = "START_GAME";
 const STOP_GAME = "STOP_GAME";
+const CLEAR_GAME = "CLEAR_GAME";
 
 type ToggleCellAction = {
   type: typeof TOGGLE_CELL;
@@ -41,12 +42,18 @@ type StopGameAction = {
   payload: {};
 };
 
+type ClearGameAction = {
+  type: typeof CLEAR_GAME;
+  payload: {};
+};
+
 type GameActionTypes =
   | ToggleCellAction
   | ResizeGridAction
   | EvolveNextGenerationAction
   | StartGameAction
-  | StopGameAction;
+  | StopGameAction
+  | ClearGameAction;
 
 export const toggleCell = (cellLocation: CellLocation): GameActionTypes => {
   return {
@@ -83,6 +90,13 @@ export const startGame = (): GameActionTypes => {
 export const stopGame = (): GameActionTypes => {
   return {
     type: STOP_GAME,
+    payload: {}
+  };
+};
+
+export const clearGame = (): GameActionTypes => {
+  return {
+    type: CLEAR_GAME,
     payload: {}
   };
 };
@@ -131,6 +145,8 @@ const reducer = (state: GameState, action: GameActionTypes): GameState => {
       return { ...state, running: true };
     case STOP_GAME:
       return { ...state, running: false };
+    case CLEAR_GAME:
+      return initGameState(state.grid.length);
     default:
       throw new Error("Unrecognized action type");
   }

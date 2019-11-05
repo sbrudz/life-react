@@ -3,6 +3,7 @@ import styles from "./game.module.css";
 import Grid from "./grid";
 import useGame from "./use-game";
 import {
+  clearGame,
   evolveNextGeneration,
   resizeGrid,
   startGame,
@@ -12,7 +13,7 @@ import {
 import Rules from "../rules";
 
 const Game = () => {
-  const { size, grid, running, dispatch } = useGame(20);
+  const { size, grid, running, liveCellCount, dispatch } = useGame(20);
 
   return (
     <section className={styles.section}>
@@ -38,6 +39,12 @@ const Game = () => {
             onClick={() => dispatch(evolveNextGeneration())}
           >
             Step
+          </button>
+          <button
+            disabled={liveCellCount === 0}
+            onClick={() => dispatch(clearGame())}
+          >
+            Clear
           </button>
         </div>
         <fieldset>

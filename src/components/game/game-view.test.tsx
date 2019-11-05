@@ -91,10 +91,16 @@ describe("<Game />", () => {
       expect(stepButton).toBeEnabled();
     });
 
-    it("has an disable Stop button", () => {
+    it("has a disabled Stop button", () => {
       const { getByText } = render(<Game />);
       const stopButton = getByText("Stop");
       expect(stopButton).toBeDisabled();
+    });
+
+    it("has a disabled Clear button", () => {
+      const { getByText } = render(<Game />);
+      const clearButton = getByText("Clear");
+      expect(clearButton).toBeDisabled();
     });
   });
 
@@ -199,6 +205,44 @@ describe("<Game />", () => {
 
       const stepButton = getByText("Step");
       expect(stepButton).toBeEnabled();
+    });
+  });
+
+  describe("the Clear button", () => {
+    describe("when there are any live cells", () => {
+      it("is enabled", () => {
+        const { getByText, getByTestId } = render(<Game />);
+        const aCell = getByTestId("cell-1-1");
+        fireEvent.click(aCell);
+
+        const clearButton = getByText("Clear");
+        expect(clearButton).toBeEnabled();
+      });
+    });
+
+    describe("when there are no live cells", () => {
+      it("is disabled", () => {
+        const { getByText, getByTestId } = render(<Game />);
+        const aCell = getByTestId("cell-1-1");
+        fireEvent.click(aCell);
+        fireEvent.click(aCell);
+
+        const clearButton = getByText("Clear");
+        expect(clearButton).toBeDisabled();
+      });
+    });
+
+    describe("when it is clicked", () => {
+      it("clears all live cells from the game", () => {
+        const { getByText, getByTestId } = render(<Game />);
+        const aCell = getByTestId("cell-1-1");
+        fireEvent.click(aCell);
+
+        const clearButton = getByText("Clear");
+        fireEvent.click(clearButton);
+
+        expect(getByTestId("cell-1-1")).toHaveClass("dead");
+      });
     });
   });
 });

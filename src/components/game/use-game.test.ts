@@ -39,6 +39,13 @@ describe("the useGame hook", () => {
 
       expect(result.current.running).toBeFalsy();
     });
+
+    it("provides a liveCellCount of 0", () => {
+      const initialSize = 8;
+      const { result } = renderHook(() => useGame(initialSize));
+
+      expect(result.current.liveCellCount).toEqual(0);
+    });
   });
 
   describe("when a resizeGrid action is dispatched", () => {
