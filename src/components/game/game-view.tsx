@@ -1,13 +1,18 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import styles from "./game.module.css";
 import Grid from "./grid";
 import useGame from "./use-game";
-import { evolveNextGeneration, resizeGrid, toggleCell } from "./game-ducks";
+import {
+  evolveNextGeneration,
+  resizeGrid,
+  startGame,
+  stopGame,
+  toggleCell
+} from "./game-ducks";
 import Rules from "../rules";
 
 const Game = () => {
-  const { size, grid, dispatch } = useGame(20);
-  const [running, setRunning] = useState(false);
+  const { size, grid, running, dispatch } = useGame(20);
   useEffect(() => {
     let timerId: NodeJS.Timeout;
     if (running) {
@@ -33,10 +38,10 @@ const Game = () => {
           to start the game.
         </p>
         <div className="btn-grp">
-          <button disabled={running} onClick={() => setRunning(true)}>
+          <button disabled={running} onClick={() => dispatch(startGame())}>
             Play
           </button>
-          <button disabled={!running} onClick={() => setRunning(false)}>
+          <button disabled={!running} onClick={() => dispatch(stopGame())}>
             Stop
           </button>
           <button

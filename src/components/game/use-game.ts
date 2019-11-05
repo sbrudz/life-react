@@ -8,7 +8,7 @@ const useGame = (initialSize: number) => {
     return gameState.grid.length;
   }, [gameState]);
 
-  return { size, grid: gameState.grid, dispatch };
+  return { size, grid: gameState.grid, running: gameState.running, dispatch };
 };
 
 export default useGame;

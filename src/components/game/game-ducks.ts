@@ -3,11 +3,14 @@ import { shouldLive } from "./game-core-rules";
 
 type GameState = {
   grid: boolean[][];
+  running: boolean;
 };
 
 const TOGGLE_CELL = "TOGGLE_CELL";
 const RESIZE_GRID = "RESIZE_GRID";
 const EVOLVE_NEXT_GENERATION = "EVOLVE_NEXT_GENERATION";
+const START_GAME = "START_GAME";
+const STOP_GAME = "STOP_GAME";
 
 type ToggleCellAction = {
   type: typeof TOGGLE_CELL;
@@ -28,10 +31,22 @@ type EvolveNextGenerationAction = {
   payload: {};
 };
 
+type StartGameAction = {
+  type: typeof START_GAME;
+  payload: {};
+};
+
+type StopGameAction = {
+  type: typeof STOP_GAME;
+  payload: {};
+};
+
 type GameActionTypes =
   | ToggleCellAction
   | ResizeGridAction
-  | EvolveNextGenerationAction;
+  | EvolveNextGenerationAction
+  | StartGameAction
+  | StopGameAction;
 
 export const toggleCell = (cellLocation: CellLocation): GameActionTypes => {
   return {
@@ -58,6 +73,20 @@ export const evolveNextGeneration = (): GameActionTypes => {
   };
 };
 
+export const startGame = (): GameActionTypes => {
+  return {
+    type: START_GAME,
+    payload: {}
+  };
+};
+
+export const stopGame = (): GameActionTypes => {
+  return {
+    type: STOP_GAME,
+    payload: {}
+  };
+};
+
 export const initGameState = (size: number) => {
   if (size <= 0) {
     throw new RangeError("The size must be greater than 0");
@@ -70,7 +99,7 @@ export const initGameState = (size: number) => {
     }
     grid.push(row);
   }
-  return { grid };
+  return { grid, running: false };
 };
 
 const nextGeneration = (currentGrid: boolean[][]) => {
@@ -88,16 +117,20 @@ const nextGeneration = (currentGrid: boolean[][]) => {
 
 const reducer = (state: GameState, action: GameActionTypes): GameState => {
   switch (action.type) {
-    case "TOGGLE_CELL":
+    case TOGGLE_CELL:
       const newState = { ...state };
       const cellLocation = action.payload.cellLocation;
       const cell = newState.grid[cellLocation.row][cellLocation.column];
       newState.grid[cellLocation.row][cellLocation.column] = !cell;
       return newState;
-    case "RESIZE_GRID":
+    case RESIZE_GRID:
       return initGameState(action.payload.newSize);
-    case "EVOLVE_NEXT_GENERATION":
-      return { grid: nextGeneration(state.grid) };
+    case EVOLVE_NEXT_GENERATION:
+      return { grid: nextGeneration(state.grid), running: state.running };
+    case START_GAME:
+      return { ...state, running: true };
+    case STOP_GAME:
+      return { ...state, running: false };
     default:
       throw new Error("Unrecognized action type");
   }

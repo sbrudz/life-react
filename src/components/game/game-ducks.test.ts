@@ -2,7 +2,9 @@ import reducer, {
   initGameState,
   toggleCell,
   resizeGrid,
-  evolveNextGeneration
+  evolveNextGeneration,
+  startGame,
+  stopGame
 } from "./game-ducks";
 import { countCells, deadCellCounter, liveCellCounter } from "./game-utils";
 
@@ -125,6 +127,31 @@ describe("game-ducks", () => {
       });
     });
 
+    describe("for the startGame action", () => {
+      it("sets running state to true", () => {
+        const size = 5;
+        const initialState = initGameState(size);
+        const action = startGame();
+
+        const newState = reducer(initialState, action);
+        expect(newState.grid).toEqual(initialState.grid);
+        expect(newState.running).toBeTruthy();
+      });
+    });
+
+    describe("for the stopGame action", () => {
+      it("sets running state to false", () => {
+        const size = 5;
+        const initialState = initGameState(size);
+        const runningState = { ...initialState, running: true };
+        const action = stopGame();
+
+        const newState = reducer(runningState, action);
+        expect(newState.grid).toEqual(runningState.grid);
+        expect(newState.running).toBeFalsy();
+      });
+    });
+
     describe("for an unknown action", () => {
       it("throws an error", () => {
         const initialState = initGameState(5);
@@ -154,6 +181,12 @@ describe("game-ducks", () => {
       expect(grid[0][1]).toBeFalsy();
       expect(grid[1][0]).toBeFalsy();
       expect(grid[1][1]).toBeFalsy();
+    });
+
+    it("initializes the state so the game is not running", () => {
+      const inputSize = 2;
+      const { running } = initGameState(inputSize);
+      expect(running).toBeFalsy();
     });
 
     it("throws an error if size is less than 1", () => {
