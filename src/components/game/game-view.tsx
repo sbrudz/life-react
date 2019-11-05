@@ -2,15 +2,9 @@ import React from "react";
 import styles from "./game.module.css";
 import Grid from "./grid";
 import useGame from "./use-game";
-import {
-  clearGame,
-  evolveNextGeneration,
-  resizeGrid,
-  startGame,
-  stopGame,
-  toggleCell
-} from "./game-ducks";
+import { resizeGrid, toggleCell } from "./game-ducks";
 import Rules from "../rules";
+import GameButtonPanel from "./game-button-panel";
 
 const Game = () => {
   const { size, grid, running, liveCellCount, dispatch } = useGame(20);
@@ -27,26 +21,11 @@ const Game = () => {
           Click cells on the grid to create a starting pattern. Then click Play
           to start the game.
         </p>
-        <div className="btn-grp">
-          <button disabled={running} onClick={() => dispatch(startGame())}>
-            Play
-          </button>
-          <button disabled={!running} onClick={() => dispatch(stopGame())}>
-            Stop
-          </button>
-          <button
-            disabled={running}
-            onClick={() => dispatch(evolveNextGeneration())}
-          >
-            Step
-          </button>
-          <button
-            disabled={liveCellCount === 0}
-            onClick={() => dispatch(clearGame())}
-          >
-            Clear
-          </button>
-        </div>
+        <GameButtonPanel
+          running={running}
+          liveCellCount={liveCellCount}
+          dispatch={dispatch}
+        />
         <fieldset>
           <label htmlFor="size">Grid Size</label>
           <input

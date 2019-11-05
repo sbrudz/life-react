@@ -47,7 +47,7 @@ type ClearGameAction = {
   payload: {};
 };
 
-type GameActionTypes =
+export type GameActionTypes =
   | ToggleCellAction
   | ResizeGridAction
   | EvolveNextGenerationAction
