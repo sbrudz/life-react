@@ -1,8 +1,10 @@
 import { CellLocation } from "./game-shared-types";
 import { shouldLive } from "./game-core-rules";
+import { encodeGridState } from "./game-utils";
 
 type GameState = {
   grid: boolean[][];
+  initCode: string;
 };
 
 const TOGGLE_CELL = "TOGGLE_CELL";
@@ -70,7 +72,10 @@ export const initGameState = (size: number) => {
     }
     grid.push(row);
   }
-  return { grid };
+  return {
+    grid,
+    initCode: encodeGridState(grid)
+  };
 };
 
 const nextGeneration = (currentGrid: boolean[][]) => {
@@ -93,11 +98,12 @@ const reducer = (state: GameState, action: GameActionTypes): GameState => {
       const cellLocation = action.payload.cellLocation;
       const cell = newState.grid[cellLocation.row][cellLocation.column];
       newState.grid[cellLocation.row][cellLocation.column] = !cell;
+      newState.initCode = encodeGridState(newState.grid);
       return newState;
     case "RESIZE_GRID":
       return initGameState(action.payload.newSize);
     case "EVOLVE_NEXT_GENERATION":
-      return { grid: nextGeneration(state.grid) };
+      return { grid: nextGeneration(state.grid), initCode: state.initCode };
     default:
       throw new Error("Unrecognized action type");
   }

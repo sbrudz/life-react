@@ -4,9 +4,14 @@ import Grid from "./grid";
 import useGame from "./use-game";
 import { evolveNextGeneration, resizeGrid, toggleCell } from "./game-ducks";
 import Rules from "../rules";
+import { useQueryParam, StringParam } from "use-query-params";
 
 const Game = () => {
-  const { size, grid, dispatch } = useGame(20);
+  // TODO: move all this stuff up into the use-game hook and fix the tests
+  // Also, move running state into the reducer and add a check so that clicking on the grid while running doesn't change the initial state
+  // Finally, add a Reset button to the UI with associated tests; Also add a Clear button.
+  const [gridCode, setGridCode] = useQueryParam("init", StringParam);
+  const { size, grid, dispatch, initCode } = useGame(gridCode);
   const [running, setRunning] = useState(false);
   useEffect(() => {
     let timerId: NodeJS.Timeout;
@@ -19,6 +24,9 @@ const Game = () => {
       };
     }
   }, [running, dispatch]);
+  useEffect(() => {
+    setGridCode(initCode);
+  }, [initCode]);
 
   return (
     <section className={styles.section}>
