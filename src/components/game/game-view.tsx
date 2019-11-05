@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import styles from "./game.module.css";
 import Grid from "./grid";
 import useGame from "./use-game";
@@ -13,17 +13,6 @@ import Rules from "../rules";
 
 const Game = () => {
   const { size, grid, running, dispatch } = useGame(20);
-  useEffect(() => {
-    let timerId: NodeJS.Timeout;
-    if (running) {
-      timerId = setInterval(() => {
-        dispatch(evolveNextGeneration());
-      }, 100);
-      return () => {
-        clearInterval(timerId);
-      };
-    }
-  }, [running, dispatch]);
 
   return (
     <section className={styles.section}>

@@ -1,7 +1,9 @@
 import { renderHook, act } from "@testing-library/react-hooks";
 import useGame from "./use-game";
 import { countCells, deadCellCounter, liveCellCounter } from "./game-utils";
-import { resizeGrid, toggleCell } from "./game-ducks";
+import { resizeGrid, startGame, toggleCell } from "./game-ducks";
+
+jest.useFakeTimers();
 
 describe("the useGame hook", () => {
   describe("on initialization", () => {
@@ -29,6 +31,13 @@ describe("the useGame hook", () => {
 
       expect(deadCellCount).toEqual(initialSize * initialSize);
       expect(liveCellCount).toEqual(0);
+    });
+
+    it("provides a running state of false", () => {
+      const initialSize = 8;
+      const { result } = renderHook(() => useGame(initialSize));
+
+      expect(result.current.running).toBeFalsy();
     });
   });
 
@@ -100,6 +109,37 @@ describe("the useGame hook", () => {
       });
       act(() => {
         result.current.dispatch(toggleCell(clickLocation));
+      });
+
+      expect(
+        result.current.grid[clickLocation.row][clickLocation.column]
+      ).toBeFalsy();
+    });
+  });
+
+  describe("when the startGame action is dispatched", () => {
+    it("updates the running state to true", () => {
+      const initialSize = 8;
+      const { result } = renderHook(() => useGame(initialSize));
+
+      act(() => {
+        result.current.dispatch(startGame());
+      });
+
+      expect(result.current.running).toBeTruthy();
+    });
+
+    it("starts a timer to evolve the game", () => {
+      const initialSize = 8;
+      const { result } = renderHook(() => useGame(initialSize));
+      const clickLocation = { row: 3, column: 4 };
+      act(() => {
+        result.current.dispatch(toggleCell(clickLocation));
+      });
+
+      act(() => {
+        result.current.dispatch(startGame());
+        jest.advanceTimersByTime(1001);
       });
 
       expect(

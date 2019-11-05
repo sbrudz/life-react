@@ -1,14 +1,24 @@
-import { useReducer, useMemo } from "react";
-import reducer, { initGameState } from "./game-ducks";
+import { useReducer, useEffect } from "react";
+import reducer, { evolveNextGeneration, initGameState } from "./game-ducks";
 
 const useGame = (initialSize: number) => {
   const [gameState, dispatch] = useReducer(reducer, initialSize, initGameState);
+  const { grid, running } = gameState;
+  const size = grid.length;
 
-  const size = useMemo(() => {
-    return gameState.grid.length;
-  }, [gameState]);
+  useEffect(() => {
+    let timerId: NodeJS.Timeout;
+    if (running) {
+      timerId = setInterval(() => {
+        dispatch(evolveNextGeneration());
+      }, 100);
+      return () => {
+        clearInterval(timerId);
+      };
+    }
+  }, [running, dispatch]);
 
-  return { size, grid: gameState.grid, running: gameState.running, dispatch };
+  return { size, grid, running, dispatch };
 };
 
 export default useGame;
