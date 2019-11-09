@@ -1,9 +1,11 @@
 import { CellLocation, ImmutableGrid } from "./game-shared-types";
 import { shouldLive } from "./game-core-rules";
+import { encodeGridState } from "./game-utils";
 
 type GameState = {
   grid: ImmutableGrid;
   readonly running: boolean;
+  readonly initCode: string;
 };
 
 const TOGGLE_CELL = "TOGGLE_CELL";
@@ -113,7 +115,8 @@ export const initGameState = (size: number) => {
     }
     grid.push(row);
   }
-  return { grid, running: false };
+  const initCode = encodeGridState(grid);
+  return { grid, running: false, initCode };
 };
 
 const nextGeneration = (currentGrid: ImmutableGrid) => {
@@ -135,11 +138,13 @@ const reducer = (state: GameState, action: GameActionTypes): GameState => {
       const newGrid = state.grid.map(row => row.slice());
       const { row, column } = action.payload.cellLocation;
       newGrid[row][column] = !state.grid[row][column];
-      return { ...state, grid: newGrid };
+      const initCode = encodeGridState(newGrid);
+      return { ...state, grid: newGrid, initCode };
     case RESIZE_GRID:
       return initGameState(action.payload.newSize);
     case EVOLVE_NEXT_GENERATION:
-      return { grid: nextGeneration(state.grid), running: state.running };
+      const grid = nextGeneration(state.grid);
+      return { ...state, grid };
     case START_GAME:
       return { ...state, running: true };
     case STOP_GAME:

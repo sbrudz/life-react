@@ -31,6 +31,16 @@ describe("game-ducks", () => {
 
         expect(initialState.grid[1][2]).toBeFalsy();
       });
+
+      it("changes the initCode to include the toggled cell", () => {
+        const initialState = initGameState(3);
+        const cellLocation = { row: 1, column: 1 };
+        const action = toggleCell(cellLocation);
+
+        const newState = reducer(initialState, action);
+
+        expect(newState.initCode).toEqual("IwBjNcg");
+      });
     });
 
     describe("for the resizeGrid action", () => {
@@ -61,6 +71,16 @@ describe("game-ducks", () => {
           expect(deadCellCount).toEqual(initialSize * initialSize);
           expect(liveCellCount).toEqual(0);
         });
+
+        it("keeps the same initCode", () => {
+          const initialSize = 3;
+          const startingState = initGameState(initialSize);
+          const evolveAction = evolveNextGeneration();
+
+          const newState = reducer(startingState, evolveAction);
+
+          expect(newState.initCode).toEqual(startingState.initCode);
+        });
       });
 
       describe("with a single live cell", () => {
@@ -79,6 +99,20 @@ describe("game-ducks", () => {
           const liveCellCount = countCells(newState.grid, liveCellCounter);
           expect(deadCellCount).toEqual(initialSize * initialSize);
           expect(liveCellCount).toEqual(0);
+        });
+
+        it("keeps the initCode for a single live cell", () => {
+          const initialSize = 3;
+          const initialState = initGameState(initialSize);
+          const startingState = reducer(
+            initialState,
+            toggleCell({ row: 1, column: 1 })
+          );
+
+          const evolveAction = evolveNextGeneration();
+          const newState = reducer(startingState, evolveAction);
+
+          expect(newState.initCode).toEqual(startingState.initCode);
         });
       });
 
@@ -102,6 +136,24 @@ describe("game-ducks", () => {
           const liveCellCount = countCells(newState.grid, liveCellCounter);
           expect(deadCellCount).toEqual(initialSize * initialSize);
           expect(liveCellCount).toEqual(0);
+        });
+
+        it("has the initCode for the original two live cells", () => {
+          const initialSize = 5;
+          const initialState = initGameState(initialSize);
+          const nextState = reducer(
+            initialState,
+            toggleCell({ row: 1, column: 2 })
+          );
+          const startingState = reducer(
+            nextState,
+            toggleCell({ row: 1, column: 1 })
+          );
+
+          const evolveAction = evolveNextGeneration();
+          const newState = reducer(startingState, evolveAction);
+
+          expect(newState.initCode).toEqual(startingState.initCode);
         });
       });
 
@@ -215,6 +267,12 @@ describe("game-ducks", () => {
       const inputSize = 2;
       const { running } = initGameState(inputSize);
       expect(running).toBeFalsy();
+    });
+
+    it("stores the initial state as an encoded bitfield", () => {
+      const inputSize = 3;
+      const { initCode } = initGameState(inputSize);
+      expect(initCode).toEqual("IwBj-I");
     });
 
     it("throws an error if size is less than 1", () => {
