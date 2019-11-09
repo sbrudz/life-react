@@ -21,6 +21,16 @@ describe("game-ducks", () => {
 
         expect(newState.grid[1][2]).toBeTruthy();
       });
+
+      it("does not change the initial state of the grid", () => {
+        const initialState = initGameState(5);
+        const cellLocation = { row: 1, column: 2 };
+        const action = toggleCell(cellLocation);
+
+        reducer(initialState, action);
+
+        expect(initialState.grid[1][2]).toBeFalsy();
+      });
     });
 
     describe("for the resizeGrid action", () => {

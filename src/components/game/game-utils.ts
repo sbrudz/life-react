@@ -2,6 +2,7 @@ import {
   compressToEncodedURIComponent,
   decompressFromEncodedURIComponent
 } from "lz-string";
+import { ImmutableGrid, ImmutableGridRow } from "./game-shared-types";
 
 type CountingMethod = {
   (rowCt: number, cell: boolean): number;
@@ -32,14 +33,14 @@ export const liveCellCounter: CountingMethod = (rowCt: number, cell: boolean) =>
  */
 const countCellsInRow = (countingMethod: CountingMethod) => (
   prevRowCellCt: number,
-  row: boolean[]
+  row: ImmutableGridRow
 ): number => row.reduce(countingMethod, prevRowCellCt);
 
 /**
  * Counts the cells in the grid using the given countingMethod
  */
 export const countCells = (
-  grid: boolean[][],
+  grid: ImmutableGrid,
   countingMethod: CountingMethod
 ): number => {
   return grid.reduce(countCellsInRow(countingMethod), 0);
@@ -52,7 +53,7 @@ export const ERROR_MESSAGES = {
   INVALID_BITFIELD_ERROR: "Invalid bitfield. Unable to reconstruct grid state."
 };
 
-export const encodeGridState = (grid: boolean[][]): string => {
+export const encodeGridState = (grid: ImmutableGrid): string => {
   if (grid === null || grid.length === 0 || grid[0].length === 0) {
     throw new Error(ERROR_MESSAGES.INVALID_GRID_ERROR);
   }
@@ -70,7 +71,7 @@ export const encodeGridState = (grid: boolean[][]): string => {
   return compressToEncodedURIComponent(bitfield);
 };
 
-export const decodeGridState = (compressedBitfield: string): boolean[][] => {
+export const decodeGridState = (compressedBitfield: string): ImmutableGrid => {
   if (!compressedBitfield) {
     throw new Error(ERROR_MESSAGES.EMPTY_BITFIELD_ERROR);
   }

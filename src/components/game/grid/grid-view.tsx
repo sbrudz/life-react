@@ -1,9 +1,9 @@
 import React from "react";
 import styles from "./grid.module.css";
-import { CellLocation } from "../game-shared-types";
+import { CellLocation, ImmutableGrid } from "../game-shared-types";
 
 type GridProps = {
-  grid: boolean[][];
+  grid: ImmutableGrid;
   onClick: (location: CellLocation) => void;
 };
 

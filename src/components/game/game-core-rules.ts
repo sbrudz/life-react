@@ -1,7 +1,7 @@
-import { CellLocation } from "./game-shared-types";
+import { CellLocation, ImmutableGrid } from "./game-shared-types";
 
 export const shouldLive = (
-  currentGrid: boolean[][],
+  currentGrid: ImmutableGrid,
   rowIdx: number,
   colIdx: number
 ) => {
@@ -39,7 +39,7 @@ export const isNeighbor = (me: CellLocation, them: CellLocation) => {
 };
 
 const getLiveNeighborCount = (
-  grid: boolean[][],
+  grid: ImmutableGrid,
   target: CellLocation
 ): number => {
   let liveNeighborCount = 0;

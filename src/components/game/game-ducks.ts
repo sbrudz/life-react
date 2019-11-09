@@ -1,9 +1,9 @@
-import { CellLocation } from "./game-shared-types";
+import { CellLocation, ImmutableGrid } from "./game-shared-types";
 import { shouldLive } from "./game-core-rules";
 
 type GameState = {
-  grid: boolean[][];
-  running: boolean;
+  grid: ImmutableGrid;
+  readonly running: boolean;
 };
 
 const TOGGLE_CELL = "TOGGLE_CELL";
@@ -116,7 +116,7 @@ export const initGameState = (size: number) => {
   return { grid, running: false };
 };
 
-const nextGeneration = (currentGrid: boolean[][]) => {
+const nextGeneration = (currentGrid: ImmutableGrid) => {
   const newGrid = [];
   for (let rowIdx = 0; rowIdx < currentGrid.length; rowIdx++) {
     const row = [];
@@ -132,11 +132,10 @@ const nextGeneration = (currentGrid: boolean[][]) => {
 const reducer = (state: GameState, action: GameActionTypes): GameState => {
   switch (action.type) {
     case TOGGLE_CELL:
-      const newState = { ...state };
-      const cellLocation = action.payload.cellLocation;
-      const cell = newState.grid[cellLocation.row][cellLocation.column];
-      newState.grid[cellLocation.row][cellLocation.column] = !cell;
-      return newState;
+      const newGrid = state.grid.map(row => row.slice());
+      const { row, column } = action.payload.cellLocation;
+      newGrid[row][column] = !state.grid[row][column];
+      return { ...state, grid: newGrid };
     case RESIZE_GRID:
       return initGameState(action.payload.newSize);
     case EVOLVE_NEXT_GENERATION:
