@@ -3,9 +3,16 @@ import useGame from "./use-game";
 import { countCells, deadCellCounter, liveCellCounter } from "./game-utils";
 import { resizeGrid, startGame, toggleCell } from "./game-ducks";
 
-jest.useFakeTimers();
-
 describe("the useGame hook", () => {
+  beforeEach(() => {
+    jest.useFakeTimers();
+  });
+
+  afterEach(() => {
+    jest.clearAllTimers();
+    jest.useRealTimers();
+  });
+
   describe("on initialization", () => {
     it("provides a size that matches the initialSize", () => {
       const initialSize = 8;
@@ -136,9 +143,12 @@ describe("the useGame hook", () => {
       expect(result.current.running).toBeTruthy();
     });
 
-    it("starts a timer to evolve the game", () => {
+    it("starts a timer to evolve the game", async () => {
+      jest.useRealTimers();
       const initialSize = 8;
-      const { result } = renderHook(() => useGame(initialSize));
+      const { result, waitForNextUpdate } = renderHook(() =>
+        useGame(initialSize)
+      );
       const clickLocation = { row: 3, column: 4 };
       act(() => {
         result.current.dispatch(toggleCell(clickLocation));
@@ -146,8 +156,9 @@ describe("the useGame hook", () => {
 
       act(() => {
         result.current.dispatch(startGame());
-        jest.advanceTimersByTime(1001);
       });
+
+      await waitForNextUpdate();
 
       expect(
         result.current.grid[clickLocation.row][clickLocation.column]
