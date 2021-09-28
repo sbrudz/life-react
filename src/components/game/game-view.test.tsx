@@ -3,9 +3,16 @@ import { render, fireEvent } from "@testing-library/react";
 import Game from ".";
 import { act } from "react-dom/test-utils";
 
-jest.useFakeTimers();
-
 describe("<Game />", () => {
+  beforeEach(() => {
+    jest.useFakeTimers();
+  });
+
+  afterEach(() => {
+    jest.clearAllTimers();
+    jest.useRealTimers();
+  });
+
   it("renders a title", () => {
     const { getByText } = render(<Game />);
     expect(getByText("Game")).toBeInTheDocument();
