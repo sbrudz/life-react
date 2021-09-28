@@ -1,15 +1,20 @@
 {
   "files": {
-    "main.css": "/life-react/static/css/main.438b7520.chunk.css",
-    "main.js": "/life-react/static/js/main.fd7e250b.chunk.js",
-    "main.js.map": "/life-react/static/js/main.fd7e250b.chunk.js.map",
-    "runtime-main.js": "/life-react/static/js/runtime-main.232cb657.js",
-    "runtime-main.js.map": "/life-react/static/js/runtime-main.232cb657.js.map",
-    "static/js/2.d3cae910.chunk.js": "/life-react/static/js/2.d3cae910.chunk.js",
-    "static/js/2.d3cae910.chunk.js.map": "/life-react/static/js/2.d3cae910.chunk.js.map",
+    "main.css": "/life-react/static/css/main.fd4cc356.chunk.css",
+    "main.js": "/life-react/static/js/main.bc489647.chunk.js",
+    "main.js.map": "/life-react/static/js/main.bc489647.chunk.js.map",
+    "runtime-main.js": "/life-react/static/js/runtime-main.5176348c.js",
+    "runtime-main.js.map": "/life-react/static/js/runtime-main.5176348c.js.map",
+    "static/js/2.d60cb940.chunk.js": "/life-react/static/js/2.d60cb940.chunk.js",
+    "static/js/2.d60cb940.chunk.js.map": "/life-react/static/js/2.d60cb940.chunk.js.map",
     "index.html": "/life-react/index.html",
-    "precache-manifest.25d0bce4e14fb5d4a1d66613ef9ae9ce.js": "/life-react/precache-manifest.25d0bce4e14fb5d4a1d66613ef9ae9ce.js",
-    "service-worker.js": "/life-react/service-worker.js",
-    "static/css/main.438b7520.chunk.css.map": "/life-react/static/css/main.438b7520.chunk.css.map"
-  }
+    "static/css/main.fd4cc356.chunk.css.map": "/life-react/static/css/main.fd4cc356.chunk.css.map",
+    "static/js/2.d60cb940.chunk.js.LICENSE.txt": "/life-react/static/js/2.d60cb940.chunk.js.LICENSE.txt"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.5176348c.js",
+    "static/js/2.d60cb940.chunk.js",
+    "static/css/main.fd4cc356.chunk.css",
+    "static/js/main.bc489647.chunk.js"
+  ]
 }
